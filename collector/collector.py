@@ -16,6 +16,8 @@ while True:
     url = 'https://data.cdc.gov/resource/9mfq-cb36.json?submission_date=2022-01-15'
     results = requests.get(url).json()
     confirmed = sum([int(result['tot_cases']) for result in results])
-
+    print('Data downloaded')
     r.set('confirmed', confirmed)
+    print('Data saved to Redis')
+    print('Sleeping for 15 minutes')
     time.sleep(15 * 60)
