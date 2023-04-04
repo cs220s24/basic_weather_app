@@ -37,25 +37,16 @@ In the `collector` folder:
 
 ## Redis Setup
 
-In the root directory of the project:
-
-* Download the latest stable version of [Redis](https://redis.io/)
-* Extract the tar ball (archive)
+* Install [Homebrew](https://brew.sh/)
 
   ```
-  tar xvfz ~/Downloads/redis-6.2.6.tar.gz
-  ```
-* Go into the redis directory and build Redis
-
-  ```
-  cd redis-6.2.6 
-  make
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
   ```
   
-* Instal Redis on your system
+* Install Redis on your system
 
   ```
-  make install
+  brew install redis
   ```
   
 ## Server Setup
