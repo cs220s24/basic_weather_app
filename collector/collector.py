@@ -9,16 +9,23 @@ dotenv.load_dotenv()
 
 host = os.getenv('REDIS_HOST')
 port = os.getenv('REDIS_PORT')
+api_key = os.getenv('API_KEY')
 
 r = redis.Redis(host=host, port=port)
 
 while True:
-    url = 'https://data.cdc.gov/resource/9mfq-cb36.json'
-    results = requests.get(url).json()
+    url = 'http://api.weatherapi.com/v1/current.json'
 
-    confirmed = sum([int(result['tot_cases']) for result in results])
+    params = {
+        'key': api_key,
+        'q': '18018',
+    }
 
-    r.set('confirmed', confirmed)
+    results = requests.get(url, params=params).json()
+
+    temp_f = results['current']['temp_f']
+
+    r.set('temp_f', temp_f)
     # Flush the buffer to ensure it is printed immediately
-    print('Saved {}. Sleeping for 15 minutes'.format(confirmed), flush=True)
+    print('Saved {}. Sleeping for 15 minutes'.format(temp_f), flush=True)
     time.sleep(15 * 60)
