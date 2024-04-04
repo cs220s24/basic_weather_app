@@ -32,6 +32,13 @@ If it succeeds, the output should be something like:
 
 ![System Architecture](architecture.png)
 
+
+# Setup
+
+The following sections describe how to setup the system so it will
+run *locally* (i.e. on your laptop).  For deployment on an EC2 
+instance, see the sections in the [AWS section](#AWS) section.
+
 ## Collector Setup
 
 In the `collector` folder:
@@ -86,7 +93,7 @@ In the `server` folder:
   ```
 
 
-## Launch the System
+## Launch the System (Local)
 
 We will launch the system in three terminal windows:
 
@@ -113,4 +120,41 @@ We will launch the system in three terminal windows:
 ## Stop the System
 
 In each terminal window, press ctrl-c to stop the program.
-    
+
+
+## AWS
+
+Deploying on an EC2 instance is *mostly* the same.  The following sections document important differences.
+
+### AWS Linux Version Issue
+
+The collector uses the `requests` library which depends on the `urllib3` library, and the `urllib3` libraries utilizes the system-level SSL library.  AWS Linux 2 has an earlier version of SSL installed, which will cause the `urllib3` library to fail with a version error.  There are three solutions:
+
+* Downgrade to an earlier version of `requests`, one that utilizes an earlier version of `urllib3` which, in turn, allow for an earlier version of SSL.  Version `2.25.0` is confirmed to work.
+* Update SSL to version 1.1.1+ (as indicated in the error). TBD how to do this...
+* Use AWS Linux 2023, which has a newer version of SSL.
+
+### Redis
+
+On Amazon Linux 2, `redis` is not available via `yum`.  Instead, you must install it with `amazon-linux-extras`
+
+One Amazon Linux 2023, you can install Redis via `yum`, but you must use `redis6`.  Afterward, the commands are `redis6-server` and `redis6-cli`.
+
+
+## SystemD Services
+
+When you install Redis (whether via `yum` or `amazon-linux-extras`), the package manager installs a service file automatically.  You can start `redis6` using:
+
+```
+sudo systemctl enable redis6
+sudo systemctl start redis6
+```
+
+(use `redis` in both commands on AWS Linux 2)
+
+The files `collector/weather_collector.service` and `server/weather_server.service` can be used to launch the collector and server.  For each:
+
+* Copy the file to `/etc/systemd/system`
+* Call `systemctl enable` on the service
+* Call `systemctl start` on the service
+
