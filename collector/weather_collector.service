@@ -1,0 +1,11 @@
+[Unit]
+Description=Launch the collector process
+After=redis6.service
+Wants=network-online.target
+
+[Service]
+ExecStart=/home/ec2-user/basic_weather_app/collector/.venv/bin/python /home/ec2-user/basic_weather_app/collector/collector.py
+
+[Install]
+WantedBy=multi-user.target
+
