@@ -1,9 +1,9 @@
-if [ ! -f /collector/.env ]; then
+if [ ! -f collector/.env ]; then
     echo "Create collector/.env before deploying"
     exit
 fi
 
-if [ ! -f /server/.env ]; then
+if [ ! -f server/.env ]; then
     echo "Create server/.env before deploying"
     exit
 fi
