@@ -4,8 +4,7 @@ After=redis6.service
 Wants=network-online.target
 
 [Service]
-ExecStart=/home/ec2-user/basic_weather_app/server/.venv/bin/gunicorn --bind 0.0.0.0:80 --chdir /home/ec2-user/basic_weather_app/server 
-server:app
+ExecStart=/home/ec2-user/basic_weather_app/server/.venv/bin/gunicorn --bind 0.0.0.0:80 --chdir /home/ec2-user/basic_weather_app/server server:app server:app
 
 [Install]
 WantedBy=multi-user.target
